@@ -52,6 +52,45 @@ app.post('/todo', async(req, res) => {
     }
 });
 
+//put
+app.put('/todo/:id', async(req, res) => {
+    try{
+        let id = req.params.id;
+        let is_complete = req.body.is_complete;
+
+        let todo = await ToDo.findOne({_id: id});
+        console.log(todo);
+
+        if(is_complete !== undefined){
+            todo.is_complete = is_complete;
+            todo.completed_at = new Date();
+        }
+
+        let updatedTodo = await todo.save();
+        console.log("updatedTodo", updatedTodo);
+
+        res.json({ success: true, message: "Successo!!!", todo: updatedTodo });
+    }catch(err){
+        res.json({ success: false, message: err.message });
+    }
+});
+
+//delete
+app.delete('/todo/:id', async(req, res) => {
+    try{
+        let id = req.params.id;
+
+        let todo = await ToDo.findOne({_id: id});
+        console.log(todo);
+
+        await todo.remove();
+
+        res.json({ success: true, message: "Successo!!!" });
+    }catch(err){
+        res.json({ success: false, message: err.message });
+    }
+});
+
 //SERVER listening
 let port = process.env.PORT || 5000;
 app.listen(port, function () {

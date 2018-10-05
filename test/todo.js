@@ -21,7 +21,7 @@ describe('Test server working', function(done) {
 describe('Test ToDo is Working', function(done) {
 
     let id;
-
+    
     //test GET
     it('should get ToDos', function(done) {
         chai.request(server)
@@ -43,7 +43,33 @@ describe('Test ToDo is Working', function(done) {
                 expect(res.body.todo).to.not.be.undefined;
                 expect(res.body.todo.is_complete).to.eql(false);
 
-                id = res.body.todo._id;	//salvando para alterar
+                id = res.body.todo._id; //salvando para alterar
+
+                done();
+            });
+    });
+
+
+    //test PUT
+    it('should update ToDos', function(done) {
+        chai.request(server)
+            .put('/todo/'+id)
+            .send({ is_complete: true })
+            .end(function(err, res){
+                expect(res.body.success).to.eql(true);
+                expect(res.body.todo).to.not.be.undefined;
+                expect(res.body.todo.is_complete).to.eql(true);
+
+                done();
+            });
+    });
+
+    //test DELETE
+    it('should remove ToDos', function(done) {
+        chai.request(server)
+            .delete('/todo/'+id)
+            .end(function(err, res){
+                expect(res.body.success).to.eql(true);
 
                 done();
             });

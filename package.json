@@ -13,7 +13,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "mocha --exit",
+    "test": "mocha --exit -t 10000",
     "start": "node server.js"
   },
   "author": "",
